@@ -18,7 +18,7 @@ class DivisiPolicy
     {
         //
     }
-    public function akses_tambah_barang(User $user){
-        $user->name == 'Rayi';
-    }
+    // public function akses_tambah_barang(User $user){
+    //     $user->name == 'Rayi';
+    // }
 }
