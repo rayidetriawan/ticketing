@@ -16,10 +16,6 @@ class TestController extends Controller
         return view('test.index', compact('data'));
     }
 
-    public function tambah()
-    {
-        return view('test.tambah');
-    }
 
     public function simpan(Request $request)
     {
@@ -36,18 +32,8 @@ class TestController extends Controller
         return redirect()->route('crudindex')->with('message','Data Berhasil Disimpan!');
     }
 
-    public function edit($id)
-    {
-		$customer = Barang::where('id', $id)->first();
-
-        
-		return response()->json($customer);
-
-    }
-
     public function update(Request $request)
     {
-        // $this->_validation($request);
         $validate = $request->validate([
             'edit_kode_barang' => 'required|max:5|min:2',
             'edit_nama_barang' => 'required|max:50|min:3'

@@ -27,15 +27,32 @@ Route::post('/','Auth\LoginController@login')->name('login');
 // // Route::group(['middleware' => 'CekloginMiddleware'], function (){
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/dashboard', function () { return view('index');})->name('/home');
-    Route::get('crud','TestController@index')->name('crudindex');
     Route::group(['middleware' => 'can:isAdmin'], function (){
+        Route::get('crud','TestController@index')->name('crudindex');
         Route::get('crud/tambah','TestController@tambah')->name('tambah');
         Route::get('crud/caribarang','TestController@cari')->name('caribarang');
         Route::post('crud/simpan','TestController@simpan')->name('simpan');
         Route::delete('crud/delete/{id}','TestController@hapus')->name('hapus');
         Route::get('crud/{id}/edit','TestController@edit')->name('edit');
-        Route::post('crud','TestController@update')->name('update');    
+        Route::post('crud','TestController@update')->name('update');  
+        
+        Route::get('kondisi','KondisiController@index')->name('kondisi');  
+        Route::post('kondisi/simpan','KondisiController@simpan')->name('simpan.kondisi');
+        Route::get('kondisi/{id}/edit','KondisiController@edit')->name('edit.kondisi');
+        Route::post('kondisi/update','KondisiController@update')->name('update.kondisi');  
+        Route::delete('kondisi/delete/{id}','KondisiController@hapus')->name('hapus.kondisi');
+
+        Route::get('kategori','KategoriController@index')->name('kategori');  
+        Route::post('kategori/simpan','KategoriController@simpan')->name('simpan.kategori');
+        Route::get('kategori/{id}/edit','KategoriController@edit')->name('edit.kategori');
+        Route::post('kategori/update','KategoriController@update')->name('update.kategori');  
+        Route::delete('kategori/delete/{id}','KategoriController@hapus')->name('hapus.kategori');
+
+        Route::get('subkategori','SubKategoriController@index')->name('subkategori'); 
+        
     });
+
+
     Route::get('logout','AuthController@logout')->name('logout');
 });
 
