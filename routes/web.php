@@ -28,11 +28,14 @@ Route::post('/','Auth\LoginController@login')->name('login');
 Route::group(['middleware' => 'auth'], function (){
     Route::get('/dashboard', function () { return view('index');})->name('/home');
     Route::get('crud','TestController@index')->name('crudindex');
-    Route::get('crud/tambah','TestController@tambah')->name('tambah');
-    Route::post('crud/simpan','TestController@simpan')->name('simpan');
-    Route::delete('crud/delete/{id}','TestController@hapus')->name('hapus');
-    Route::get('crud/{id}/edit','TestController@edit')->name('edit');
-    Route::patch('crud/{id}','TestController@update')->name('update');    
+    Route::group(['middleware' => 'can:isAdmin'], function (){
+        Route::get('crud/tambah','TestController@tambah')->name('tambah');
+        Route::get('crud/caribarang','TestController@cari')->name('caribarang');
+        Route::post('crud/simpan','TestController@simpan')->name('simpan');
+        Route::delete('crud/delete/{id}','TestController@hapus')->name('hapus');
+        Route::get('crud/{id}/edit','TestController@edit')->name('edit');
+        Route::post('crud','TestController@update')->name('update');    
+    });
     Route::get('logout','AuthController@logout')->name('logout');
 });
 

@@ -38,21 +38,36 @@ class TestController extends Controller
 
     public function edit($id)
     {
-        $data = Barang::where('id', $id)->first();
+		$customer = Barang::where('id', $id)->first();
+
         
-        return view('test.edit', compact('data'));
+		return response()->json($customer);
+
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $this->_validation($request);
+        // $this->_validation($request);
+        $validate = $request->validate([
+            'edit_kode_barang' => 'required|max:5|min:2',
+            'edit_nama_barang' => 'required|max:50|min:3'
+        ],
+        [
+            'edit_kode_barang.required' => 'Bidang ini tidak boleh kosong !',
+            'edit_kode_barang.max' => 'Maksimal 5 Karakter!',
+            'edit_kode_barang.min' => 'Minimal 2 Karakter!',
+
+            'edit_nama_barang.required' => 'Bidang ini tidak boleh kosong!',
+            'edit_nama_barang.max' => 'Maksimal 50 Karakter!',
+            'edit_nama_barang.min' => 'Minimal 3 Karakter!',
+        ]);
         $data = [
-            'kode_barang' => $request->kode_barang,
-            'nama_barang' => $request->nama_barang, 
+            'kode_barang' => $request->edit_kode_barang,
+            'nama_barang' => $request->edit_nama_barang, 
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
-        Barang::where('id', $id)->update($data);
+        Barang::where('id', $request->id)->update($data);
 
         return redirect()->route('crudindex')->with('message','Data Berhasil Diubah!');
     }
@@ -60,7 +75,7 @@ class TestController extends Controller
     private function _validation(Request $request){
         $validate = $request->validate([
             'kode_barang' => 'required|max:5|min:2',
-            'nama_barang' => 'required|max:50|min:3'
+            'nama_barang' => 'required|max:50|min:3',
         ],
         [
             'kode_barang.required' => 'Bidang ini tidak boleh kosong !',
@@ -79,4 +94,5 @@ class TestController extends Controller
 
         return redirect()->back()->with('message','Data Berhasil Dihapus!');
     }
+    
 }
