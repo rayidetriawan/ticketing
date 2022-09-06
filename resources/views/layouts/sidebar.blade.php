@@ -111,7 +111,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link @yield('nav_active_sub_kategori')" href="{{ route('crudindex')}}">
+                    <a class="nav-link menu-link @yield('nav_active_sub_kategori')" href="{{ route('subkategori')}}">
                         <i class="mdi mdi-database-cog-outline"></i> <span data-key="t-landing">Sub. Kategori</span>
                         {{-- <span class="badge badge-pill bg-danger" data-key="t-new">New</span> --}}
                     </a>

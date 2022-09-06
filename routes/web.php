@@ -48,7 +48,11 @@ Route::group(['middleware' => 'auth'], function (){
         Route::post('kategori/update','KategoriController@update')->name('update.kategori');  
         Route::delete('kategori/delete/{id}','KategoriController@hapus')->name('hapus.kategori');
 
-        Route::get('subkategori','SubKategoriController@index')->name('subkategori'); 
+        Route::get('subkategori','SubKategoriController@index')->name('subkategori');
+        Route::post('subkategori/simpan','SubKategoriController@simpan')->name('simpan.subkategori');
+        Route::get('subkategori/{id}/edit','SubKategoriController@edit')->name('edit.subkategori');
+        Route::post('subkategori/update','SubKategoriController@update')->name('update.subkategori');  
+        Route::delete('subkategori/delete/{id}','SubKategoriController@hapus')->name('hapus.subkategori'); 
         
     });
 
