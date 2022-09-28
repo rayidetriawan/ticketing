@@ -60,4 +60,16 @@ Route::group(['middleware' => 'auth'], function (){
     Route::get('logout','AuthController@logout')->name('logout');
 });
 
+Route::get('send-mail', function () {
+   
+    $details = [
+        'title' => 'Mail from ItSolutionStuff.com',
+        'body' => 'This is for testing email using smtp'
+    ];
+   
+    \Mail::to('rayidetriawan@gmail.com')->send(new \App\Mail\MyTestMail($details));
+   
+    dd("Email is Sent.");
+});
+
 Route::get('/home', 'HomeController@index')->name('home');
