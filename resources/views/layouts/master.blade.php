@@ -20,6 +20,7 @@
         <link href="{{ asset('assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="{{ asset('assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset('assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
         <!-- custom Css-->
         <link href="{{ asset('assets/css/lenna.custom.css')}}" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/daterangepicker.css')}}" />
@@ -56,9 +57,9 @@
                         
                                     <div class="page-title-right">
                                         <ol class="breadcrumb m-0">
-                                            <li class="breadcrumb-item">
+                                            {{-- <li class="breadcrumb-item">
                                                 <a href="javascript: void(0);">Pages</a></li>
-                                            <li class="breadcrumb-item active">Starter</li>
+                                            <li class="breadcrumb-item active">Starter</li> --}}
                                         </ol>
                                     </div>
                         
@@ -77,7 +78,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-sm-6">
-                                <script>document.write(new Date().getFullYear())</script> © Velzon.
+                                <script>document.write(new Date().getFullYear())</script> © Ticketing System.
                             </div>
                             <div class="col-sm-6">
                                 <div class="text-sm-end d-none d-sm-block">

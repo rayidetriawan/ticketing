@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Sign In | Velzon - Admin & Dashboard Template</title>
+    <title>Sign In | Helpdesk Ticketing System</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -54,7 +54,7 @@
             <!-- end row -->
 
             <div class="row justify-content-center">
-                <div class="col-md-8 col-lg-6 col-xl-5">
+                <div class="col-md-8 col-lg-6 col-xl-5 mt-5">
                     <div class="card mt-3">
 
                         <div class="card-body p-4">
@@ -68,11 +68,11 @@
                                     {{-- <input type="hidden" name="_token" value="GRnh6IhvowqWwRofYQN8ZcmpUSfR71R3UCjdubxi"> --}}
                                     <div class="mb-3">
                                         <label for="username" class="form-label">Username</label>
-                                        <input type="text" class="form-control" autocomplete="off" id="username"
+                                        <input type="text" class="form-control" oninput="this.value = this.value.toUpperCase()" autocomplete="off" id="username"
                                             name="username" placeholder="Enter username">
                                     </div>
 
-                                    <div class="mb-3">
+                                    <div class="mb-6">
                                         <div class="float-end">
                                             {{-- <a href="auth-pass-reset-basic" class="text-muted">Forgot password?</a> --}}
                                         </div>
@@ -87,27 +87,25 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value=""
-                                            id="auth-remember-check">
-                                        <label class="form-check-label" for="auth-remember-check">Remember me</label>
-                                    </div>
+                                    
 
                                     <div class="mt-4">
-                                        <button class="btn btn-success w-100" type="submit">Sign In</button>
+                                        <br>
+                                        <button class="btn btn-success w-100" id="btnSubmit" type="submit">Sign In</button>
+                                        <div id="loading" style="display:none;">
+                                            <button type="button" class="btn btn-success w-100 btn-load" disabled>
+                                                <span class="d-flex align-items-center">
+                                                    <span class="spinner-border flex-shrink-0" role="status">
+                                                        <span class="visually-hidden">Loading...</span>
+                                                    </span>
+                                                    <span class="flex-grow-1 ms-2">
+                                                        Loading...
+                                                    </span>
+                                                </span>
+                                            </button>
+                                        </div>
                                     </div>
 
-                                    {{-- <div class="mt-4 text-center">
-                                        <div class="signin-other-title">
-                                            <h5 class="fs-13 mb-4 title">Sign In with</h5>
-                                        </div>
-                                        <div>
-                                            <button type="button" class="btn btn-primary btn-icon waves-effect waves-light"><i class="ri-facebook-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-danger btn-icon waves-effect waves-light"><i class="ri-google-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-dark btn-icon waves-effect waves-light"><i class="ri-github-fill fs-16"></i></button>
-                                            <button type="button" class="btn btn-info btn-icon waves-effect waves-light"><i class="ri-twitter-fill fs-16"></i></button>
-                                        </div>
-                                    </div> --}}
                                 </form>
                             </div>
                         </div>
@@ -136,8 +134,7 @@
                         <p class="mb-0 text-muted">&copy;
                             <script>
                                 document.write(new Date().getFullYear())
-                            </script> Velzon. Crafted with <i class="mdi mdi-heart text-danger"></i> by
-                            Themesbrand
+                            </script> Honda Mitrajaya | Ticketing
                         </p>
                     </div>
                 </div>
@@ -155,7 +152,7 @@
     <script src="http://velzon.laravel-default.themesbrand.com/assets/js/plugins.min.js"></script> --}}
 
 
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="{{ asset('assets/libs/simplebar/simplebar.min.js') }}"></script>
@@ -168,7 +165,22 @@
 <script src="http://velzon.laravel-default.themesbrand.com/assets/libs/particles.js/particles.js.min.js"></script>
 <script src="http://velzon.laravel-default.themesbrand.com/assets/js/pages/particles.app.js"></script>
 <script src="http://velzon.laravel-default.themesbrand.com/assets/js/pages/password-addon.init.js"></script>
-
+@if (session('message'))
+    <script>
+        Toastify({
+            text: "{{ session('message') }}",
+            duration: 3000,
+            close: true,
+            gravity: "top", // `top` or `bottom`
+            position: "right", // `left`, `center` or `right`
+            stopOnFocus: true, // Prevents dismissing of toast on hover
+            style: {
+                background: "linear-gradient(to right, #0ab39c, #2982aa)",
+            },
+            //onClick: function(){} // Callback after click
+        }).showToast();
+    </script>
+@endif
 @error('password')
     <script>
         Toastify({
@@ -201,6 +213,13 @@
             }).showToast();
     </script>
 @enderror
+<script type="text/javascript">
+    $('#btnSubmit').click(function() {
+        $(this).css('display', 'none');
+        $('#loading').show();
+        return true;
+    });
+</script>
 </body>
 
 </html>

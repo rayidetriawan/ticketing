@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Data Kategori')
-@section('nav_active_kategori','active')
+@section('nav_active_kategori', 'active')
 @section('content')
 
     <div class="modal fade" id="exampleModalgrid" tabindex="-1" aria-labelledby="exampleModalgridLabel" aria-hidden="true"
@@ -63,7 +63,7 @@
                                 <div>
                                     <label for="validationCustom04"
                                         class="form-label @error('edit_nama_kategori') text-danger @enderror">kategori
-                                        </label>
+                                    </label>
                                     <input type="text" name="edit_nama_kategori" id="edit_nama_kategori"
                                         value="{{ old('edit_nama_kategori') }}"
                                         class="form-control @error('edit_nama_kategori') is-invalid @enderror"
@@ -111,9 +111,9 @@
                         </div>
                         <div class="col-12 col-md-6" data-v-cd5f1dea="">
                             <div class="d-flex justify-content-md-end justify-content-center" data-v-cd5f1dea="">
-                                <div class="search-box ms-2" data-v-cd5f1dea=""><input type="text"
-                                        class="form-control" placeholder="Search .." data-v-cd5f1dea="" id="myInput"
-                                        name="search"><i class="ri-search-line search-icon" data-v-cd5f1dea=""></i>
+                                <div class="search-box ms-2" data-v-cd5f1dea=""><input type="text" class="form-control"
+                                        placeholder="Search .." data-v-cd5f1dea="" id="myInput" name="search"><i
+                                        class="ri-search-line search-icon" data-v-cd5f1dea=""></i>
                                 </div>
                             </div>
                         </div>
@@ -148,8 +148,6 @@
                                                     value="option1">
                                             </div>
                                         </td>
-
-
                                         <td class="status">{{ $data->firstItem() + $no }}</td>
                                         <td class="customer_name">{{ $item->nama_kategori }}</td>
                                         <td class="phone">{{ $item->updated_at }}</td>
@@ -163,7 +161,7 @@
                                                             data-v-cd5f1dea=""></i></button>
                                                     <ul class="dropdown-menu dropdown-menu-end" data-v-cd5f1dea=""
                                                         style="">
-                                                        
+
                                                         <li data-v-cd5f1dea="">
                                                             <a href="javascript:void(0)" class="dropdown-item edit"
                                                                 id="edit" data-v-cd5f1dea=""
@@ -272,11 +270,11 @@
 @endpush
 @push('scripts')
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
             $("#myInput").on("keyup", function() {
                 var value = $(this).val().toLowerCase();
                 $("#carirow tr").filter(function() {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });
         });

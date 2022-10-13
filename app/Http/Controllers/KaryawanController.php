@@ -5,16 +5,20 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Karyawan;
 use App\Departemen;
+use App\Branch;
+use App\Jabatan;
 use DB;
 
 class KaryawanController extends Controller
 {
     public function index()
     {
-        $data = Karyawan::paginate(10);
-        $dep = Departemen::paginate(10);
+        $data   = Karyawan::paginate(10);
+        $dep    = Departemen::all();
+        $branch = Branch::all();
+        $jabatan = Jabatan::all();
         
-        return view('master.karyawan', compact('data','dep'));
+        return view('master.karyawan', compact('data','dep','branch','jabatan'));
     }
 
     private function _validation(Request $request){
@@ -22,6 +26,8 @@ class KaryawanController extends Controller
             'nama'      => 'required|max:50|min:2',
             'jk'        => 'required|in:L,P',
             'bagdept'   => 'required',
+            'jabatan'   => 'required',
+            'branch'   =>   'required',
             'telp'      => 'required|max:15|min:9',
         ],
         [
@@ -29,6 +35,8 @@ class KaryawanController extends Controller
             'jk.required'        => 'Bidang ini tidak boleh kosong !',
             'bagdept.required'   => 'Bidang ini tidak boleh kosong !',
             'telp.required'      => 'Bidang ini tidak boleh kosong !',
+            'branch.required'      => 'Bidang ini tidak boleh kosong !',
+            'jabatan.required'      => 'Bidang ini tidak boleh kosong !',
 
             'nama.max' => 'Maksimal 50 Karakter!',
             'nama.min' => 'Minimal 2 Karakter!',
@@ -46,12 +54,12 @@ class KaryawanController extends Controller
             foreach($q as $k)
             {
                 $tmp = ((int)$k->nik)+1;
-                $kd = "TNS".sprintf("%04s", $tmp);
+                $kd = "MJG".sprintf("%04s", $tmp);
             }
         }
         else
         {
-            $kd = "TNS0001";
+            $kd = "MJG0001";
         }
 
         return $kd;
@@ -66,7 +74,8 @@ class KaryawanController extends Controller
             'nama'      => $request->nama,
             'jk'        => $request->jk,
             'id_bag_dept'  => $request->bagdept,
-            'id_jabatan'   => '',
+            'id_jabatan'   => $request->jabatan,
+            'branch_id'        => $request->branch,
             'no_telp'      => $request->telp,
             'created_at' => date('Y-m-d H:i:s'), 
             'updated_at' => date('Y-m-d H:i:s')
