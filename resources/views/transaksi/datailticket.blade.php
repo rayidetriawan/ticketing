@@ -2,12 +2,12 @@
 @section('title', 'Detail Ticket')
 {{-- @section('nav_active_my_ticket', 'active') --}}
 @section('content')
-
+    @if ($cekreview != null)
     <div id="loginModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-dialog-centered">
             <form action="{{ route('add.rating') }}" method="POST">
                 @csrf
-                <input type="hidden" id="idTIket" name="idTIket" value="{{ $data->idTiket }}">
+                <input type="hidden" id="idTIket" name="idTIket" value="{{ $cekreview->idTiket }}">
                 <div class="modal-content border-0 overflow-hidden">
                     <div class="modal-body login-modal p-5 pb-4">
                         <h5 class="text-white fs-20">Berikan ratingmu</h5>
@@ -15,8 +15,10 @@
                             Untuk penilaian kinerja tim IT internal, Berikanlah Rating Sesuai Kinerja Teknisi.
                         </p>
                         <h5 class="text-white fs-15 mt-4 mb-0">Review</h5>
-                        <p class="text-white-50 mb-0 fs-15"> Ticket #{{ $data->idTiket }} -
-                            {{ $data->subjek_masalah }}</p>
+                        <p class="text-white-50 mb-0 fs-15"> Ticket #{{ $cekreview->idTiket }} -
+                            {{ $cekreview->subjek_masalah }}</p>
+                            <p class="text-white-50 mb-0 fs-15"> Waktu Pengerjaan : @tanggal($cekreview->tgl_proses) -
+                                @tanggal($cekreview->tgl_solved)</p>
                         <div class="mb-0">
                             <div class="form-group">
                                 <div class="col">
@@ -58,7 +60,7 @@
             </form>
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
-
+    @endif
     <div class="row">
         <div class="col-lg-12">
             <div class="card mt-n4 mx-n4 mb-n5">
@@ -103,7 +105,14 @@
                                                 <div class="badge rounded-pill bg-success fs-12" id="ticket-priority">
                                                     Solved</div>
                                             @endif
-
+                                            @if($data->ratting['rating'] != null)
+                                            <div class="vr"></div>
+                                            <span>
+                                                <span class="badge bg-light text-body fs-12 fw-medium">
+                                                    <i class="mdi mdi-star text-warning me-1"></i> {{ $data->ratting['rating'] }}
+                                                </span>
+                                            </span>
+                                            @endif
                                         </div>
                                     </div>
                                     <!--end col-->
@@ -188,12 +197,20 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-medium">Create Date</td>
-                                    <td id="c-date">@tanggal($data->created_at) </td>
+                                    <td class="fw-medium">Tanggal Proses</td>
+                                    <td id="c-date">
+                                        @if(!empty($data->tgl_proses)) @tanggal($data->tgl_proses)
+                                        @else -
+                                        @endif
+                                    </td>
                                 </tr>
                                 <tr>
-                                    <td class="fw-medium">Last Update</td>
-                                    <td>@tanggal($data->updated_at) </td>
+                                    <td class="fw-medium">Tanggal Selesai</td>
+                                    <td>
+                                        @if(!empty($data->tgl_solved)) @tanggal($data->tgl_solved)
+                                        @else -
+                                        @endif
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -250,7 +267,7 @@
         <div class="col-xxl-9">
             <div class="card">
                 <div class="card-body p-4 mb-0">
-                    <h6 class="fw-semibold text-uppercase mb-3">Ticket Discription</h6>
+                    <h6 class="fw-semibold text-uppercase mb-3">Ticket Description</h6>
                     <p class="text-muted">{{ $data->deskripsi_masalah }}</p>
                 </div>
                 <!--end card-body-->

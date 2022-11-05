@@ -36,6 +36,14 @@
                                         @elseif($data->status == 0)
                                             <div class="badge rounded-pill bg-success fs-12" id="ticket-priority">Solved</div>
                                         @endif
+                                        @if($data->ratting['rating'] != null)
+                                        <div class="vr"></div>
+                                        <span>
+                                            <span class="badge bg-light text-body fs-12 fw-medium">
+                                                <i class="mdi mdi-star text-warning me-1"></i> {{ $data->ratting['rating'] }}
+                                            </span>
+                                        </span>
+                                        @endif
                                         
                                     </div>
                                 </div>
@@ -111,12 +119,20 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="fw-medium">Create Date</td>
-                                <td id="c-date">@tanggal($data->created_at) </td>
+                                <td class="fw-medium">Tanggal Proses</td>
+                                <td id="c-date">
+                                    @if(!empty($data->tgl_proses)) @tanggal($data->tgl_proses)
+                                    @else -
+                                    @endif
+                                </td>
                             </tr>
                             <tr>
-                                <td class="fw-medium">Last Update</td>
-                                <td>@tanggal($data->updated_at) </td>
+                                <td class="fw-medium">Tanggal Selesai</td>
+                                <td>
+                                    @if(!empty($data->tgl_solved)) @tanggal($data->tgl_solved)
+                                    @else -
+                                    @endif
+                                </td>
                             </tr>
                         </tbody>
                     </table>

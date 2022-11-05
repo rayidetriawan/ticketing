@@ -314,13 +314,13 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="sort" data-sort="customer_name">No</th>
+                                    <th class="sort" data-sort="status">NIK</th>
                                     <th class="sort" data-sort="email">Nama</th>
                                     <th class="sort" data-sort="phone">Jenis Kelamin</th>
                                     <th class="sort" data-sort="date">Cabang</th>
                                     <th class="sort" data-sort="date">Departemen</th>
                                     <th class="sort" data-sort="date">Jabatan</th>
                                     <th class="sort" data-sort="date">No Telepon</th>
-                                    <th class="sort" data-sort="status">Updated</th>
                                     <th class="sort" data-sort="status">Created</th>
                                     <th class="sort" data-sort="action">Action</th>
                                 </tr>
@@ -329,13 +329,13 @@
                                 @foreach ($data as $no => $item)
                                     <tr>
                                         <td class="status">{{ $data->firstItem() + $no }}</td>
+                                        <td class="customer_name">{{ $item->nik }}</td>
                                         <td class="customer_name">{{ $item->nama }}</td>
                                         <td class="email"> {{ $item->jk == 'L' ? 'Laki-laki' : 'Perempuan' }}</td>
                                         <td class="email">{{ $item->cabang['branch_name'] }}</td>
                                         <td class="email">{{ $item->departemen['nama_dept'] }}</td>
                                         <td class="email">{{ $item->jabatan['nama_jabatan'] }}</td>
                                         <td class="email">{{ $item->no_telp }}</td>
-                                        <td class="phone">@tanggal($item->updated_at)</td>
                                         <td class="date">@tanggal($item->created_at)</td>
                                         <td>
                                             <span data-v-cd5f1dea="">

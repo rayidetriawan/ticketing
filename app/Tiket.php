@@ -9,6 +9,12 @@ class Tiket extends Model
     protected $fillable = [
         'reported','id_kategori', 'id_kondisi','subjek_masalah','deskripsi_masalah','foto','file','status','progress','tgl_proses'
     ];
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'tgl_proses',
+        'tgl_solved'
+    ];
 
     public function kondisi(){
         return $this->belongsTo('\App\Kondisi','id_kondisi');

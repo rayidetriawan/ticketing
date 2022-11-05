@@ -1,5 +1,6 @@
 @extends('layouts.master')
 @section('title','Dashboard')
+@section('nav_active_dashboard', 'active')
 @section('content')
 @if($data != null)
 <div id="subscribeModals" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
@@ -40,69 +41,43 @@
                 <div class="row row-cols-xxl-5 row-cols-md-3 row-cols-1 g-0">
                     <div class="col">
                         <div class="py-4 px-3">
-                            <h5 class="text-muted text-uppercase fs-13">Total Ticket <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h5>
+                            <h5 class="text-muted text-uppercase fs-13">Total Ticket </h5>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
                                     <i class="ri-ticket-2-line display-6 text-muted"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value" data-target="197">0</span></h2>
+                                    <h2 class="mb-0"><span class="counter-value" data-target="{{ $jumlah_tiket }}">0</span></h2>
                                 </div>
                             </div>
                         </div>
                     </div><!-- end col -->
                     <div class="col">
                         <div class="mt-3 mt-md-0 py-4 px-3">
-                            <h5 class="text-muted text-uppercase fs-13">Total Users <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i></h5>
+                            <h5 class="text-muted text-uppercase fs-13">On Progress </h5>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <i class="ri-user-6-line display-6 text-muted"></i>
+                                    <i class="ri-time-line display-6 text-muted"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value" data-target="40">0</span></h2>
+                                    <h2 class="mb-0"><span class="counter-value" data-target="{{ $onprogress }}">0</span></h2>
                                 </div>
                             </div>
                         </div>
                     </div><!-- end col -->
                     <div class="col">
                         <div class="mt-3 mt-md-0 py-4 px-3">
-                            <h5 class="text-muted text-uppercase fs-13">Total Teknisi <i class="ri-arrow-down-circle-line text-danger fs-18 float-end align-middle"></i></h5>
+                            <h5 class="text-muted text-uppercase fs-13">Solved </h5>
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0">
-                                    <i class="ri-nurse-line display-6 text-muted"></i>
+                                    <i class="ri-check-double-line display-6 text-muted"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value" data-target="32">0</span></h2>
+                                    <h2 class="mb-0"><span class="counter-value" data-target="{{ $done_tiket }}">0</span></h2>
                                 </div>
                             </div>
                         </div>
-                    </div><!-- end col -->
-                    <div class="col">
-                        <div class="mt-3 mt-lg-0 py-4 px-3">
-                            <h5 class="text-muted text-uppercase fs-13">Waiting Approval Internal</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <i class="ri-coupon-2-line display-6 text-muted"></i>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value" data-target="15">0</span></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
-                    <div class="col">
-                        <div class="mt-3 mt-lg-0 py-4 px-3">
-                            <h5 class="text-muted text-uppercase fs-13">Waiting Approval Technition</h5>
-                            <div class="d-flex align-items-center">
-                                <div class="flex-shrink-0">
-                                    <i class="ri-coupon-2-line display-6 text-muted"></i>
-                                </div>
-                                <div class="flex-grow-1 ms-3">
-                                    <h2 class="mb-0"><span class="counter-value" data-target="10">0</span></h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- end col -->
+                    </div>
                 </div><!-- end row -->
             </div><!-- end card body -->
         </div><!-- end card -->

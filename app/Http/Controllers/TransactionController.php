@@ -134,7 +134,6 @@ class TransactionController extends Controller
         $data->file             = ($request->file('file')) ? 'FL-'.$idDok : '';
         $data->status           = '1';
         $data->progress         = 0;
-        $data->tgl_proses       = date('Y-m-d');
         $data->save();
 
         $track = new Tracking();
@@ -147,8 +146,8 @@ class TransactionController extends Controller
         return redirect()->route('newticket')->with('message', 'Tiket berhasil ditambah !');
     }
 
-    public function myticket(Request $request){
-        $data = Tiket::where('reported','=', Auth::user()->username)->paginate(10);
+    public function myticket(){
+        $data = Tiket::where('reported','=', Auth::user()->username)->orderBy('created_at', 'DESC')->paginate(10);
         
         return view('transaksi.myticket', compact('data'));
     }
@@ -161,20 +160,25 @@ class TransactionController extends Controller
 
         $cektiket = Tiket::where('reported','=', Auth::user()->username)
                                 ->where('status','=', 0)
-                                ->first();
+                                ->get();
         $cekreview= null;
-        if($cektiket){
-            //cek apakah sudah ada penilaian ?
-            $cekrating = Rating::where('id_ticket', '=', $cektiket->idTiket)->first();
-            if(empty($cekrating)){
-                $cekreview = Tiket::where('idTiket','=',$cektiket->idTiket)->first();
+        foreach ($cektiket as $value) {
+            
+            if($cektiket){
+                //cek apakah sudah ada penilaian ?
+                $cekrating = Rating::where('id_ticket', '=', $value->idTiket)->first();
+                // dd(empty($cekrating));
+                if(empty($cekrating)){
+                    $cekreview = Tiket::where('idTiket','=',$value->idTiket)->first();
+                    return view('transaksi.datailticket', compact('data','user','tracking','cekreview'));
+                }
             }
         }
-        
+        // dd($cekreview);
         return view('transaksi.datailticket', compact('data','user','tracking','cekreview'));
     }
-    public function listticket(Request $request){
-        $data = Tiket::where('status', '!=','1')->paginate(10); // setelah ticket di approve -> assigment/ detail
+    public function listticket(){
+        $data = Tiket::where('status', '!=','1')->orderBy('updated_at', 'DESC')->paginate(10); // setelah ticket di approve -> assigment/ detail
         
         return view('transaksi.listticket', compact('data'));
     }
@@ -226,6 +230,7 @@ class TransactionController extends Controller
             $dtiket = [
                 'status'     => 5,
                 'progress'   => 100,
+                'id_teknisi' => Auth::user()->username,
                 'updated_at' => date('Y-m-d H:i:s')
             ];
 
@@ -270,7 +275,8 @@ class TransactionController extends Controller
             $dtiket = [
                 'status'     => 3,
                 'id_teknisi' => $request->teknisi,
-                'updated_at' => date('Y-m-d H:i:s')
+                'updated_at' => date('Y-m-d H:i:s'),
+                'tgl_solved' => date('Y-m-d H:i:s')
             ];
             
             Tiket::where('idTiket', $request->id)->update($dtiket);
@@ -312,12 +318,22 @@ class TransactionController extends Controller
             ]);
 
             //update ke tabel tiket dan tracking
-            $dtiket = [
-                'status'     => ($request->progress < 100) ? 4 : 0,
-                'progress'   => $request->progress,
-                'updated_at' => date('Y-m-d H:i:s')
-            ];
-
+            if($request->progress == 100){
+                $dtiket = [
+                    'status'     => ($request->progress < 100) ? 4 : 0,
+                    'progress'   => $request->progress,
+                    'tgl_solved' => ($request->progress == 100) ? date('Y-m-d H:i:s') : null,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ]; 
+            } else {
+                $dtiket = [
+                    'status'     => ($request->progress < 100) ? 4 : 0,
+                    'progress'   => $request->progress,
+                    'updated_at' => date('Y-m-d H:i:s')
+                ];
+                # code...
+            }
+            // dd($dtiket);
             //update
             Tiket::where('idTiket', $request->idTiket)->update($dtiket);
 
@@ -336,22 +352,71 @@ class TransactionController extends Controller
         }
     }
     public function getSpesialis($id){
-        $data = Teknisi::with('karyawan')->where('id_kategori', '=', $id)->get();
+        $data = Teknisi::with('karyawan')
+            ->where('id_kategori', '=', $id)
+            ->where('status', '=', 1)
+            ->get();
 
         return response()->json($data);
     }
 
     public function assigmentTicket(){
-        $data = Tiket::where('id_teknisi', '=', Auth::user()->username)->paginate(10);
+        $data = Tiket::where('id_teknisi', '=', Auth::user()->username)->orderBy('updated_at', 'Desc')->paginate(10);
         
         return view('transaksi.assigmentticket', compact('data'));
     }
 
     public function detailticketteknisi($id){
         $data       = Tiket::where('idTiket','=', $id)->first();
+        
+        if ($data->progress < 10) {
+            # code...
+            $dtiket = [
+                'tgl_proses' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s')
+            ];
+
+            Tiket::where('idTiket', $id)->update($dtiket);
+            $data       = Tiket::where('idTiket','=', $id)->first();
+        } 
         $tracking   = Tracking::where('id_ticket','=', $id)->paginate(20);
         $user       = Karyawan::where('nik','=', $data->reported)->first();
         
         return view('transaksi.datailticketteknisi', compact('data','user','tracking'));
+    }
+
+    public function reportTeknisi(){
+        $total = Tiket::count();
+        $wainternal = Tiket::where('status','=',1)->count();
+        $wateknisi = Tiket::where('status','=',3)->count();
+        $sukses = Tiket::where('status','=',0)->count();
+        $tolak = Tiket::where('status','=',5)->count();
+        $data = Tiket::groupBy('id_teknisi')
+            ->selectRaw('karyawans.nama as nama,karyawans.nik as nik,
+                count(CASE WHEN tikets.status = 0 THEN 1 END) as sukses,
+                count(CASE WHEN tikets.status = 3 THEN 1 END) as waiting,
+                count(CASE WHEN tikets.status = 4 THEN 1 END) as onprogress,
+                count(CASE WHEN tikets.status = 5 THEN 1 END) as reject,
+                sum(ratings.rating) / count(id_ticket) as rating')
+            ->join('ratings','ratings.id_ticket','=','tikets.idTiket')
+            ->join('karyawans','karyawans.nik','=','tikets.id_teknisi')
+            ->get();
+        // $data = DB::select('SELECT (select nama from karyawans where karyawans.nik = tikets.id_teknisi) as nama ,count(CASE WHEN tikets.status = 0 THEN 1 END) as sukses, count(CASE WHEN tikets.status = 3 THEN 1 END) as waiting, count(CASE WHEN tikets.status = 4 THEN 1 END) as onprogress, count(CASE WHEN tikets.status = 5 THEN 1 END) as reject, (select sum(rating) / count(id_ticket) from ratings where ratings.id_ticket = tikets.idTiket) as rating FROM tikets GROUP BY tikets.id_teknisi');
+        // dd($data);
+        
+        return view('report.teknisi', compact('total','wainternal','wateknisi','sukses','tolak','data'));
+    }
+
+    public function reportTeknisiDetail($id){
+        $total      = Tiket::where('id_teknisi', $id)->count();
+        $wateknisi  = Tiket::where('id_teknisi', $id)->where('status',3)->count();
+        $onprogress = Tiket::where('id_teknisi', $id)->where('status',4)->count();
+        $sukses     = Tiket::where('id_teknisi', $id)->where('status',0)->count();
+        $rating     = Tiket::selectRaw('sum(ratings.rating) / count(id_ticket) as rating')
+                        ->join('ratings','ratings.id_ticket','=','tikets.idTiket')
+                        ->where('id_teknisi', $id)->first();
+        $data       = Tiket::where('id_teknisi', $id)->paginate(10);
+       
+        return view('report.detailteknisi', compact('total','onprogress','wateknisi','sukses','tolak','rating','data'));
     }
 }

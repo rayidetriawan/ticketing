@@ -2,23 +2,23 @@
     <!-- LOGO -->
     
 
-    <div class="navbar-brand-box">
+    <div class="navbar-brand-box mt-2 mb-2">
         <!-- Dark Logo-->
         <a href="index.html" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="{{ asset('assets/images/logo-sm.png')}}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="https://themesbrand.com/velzon/html/default/assets/images/logo-light.png" alt="" height="17">
+                <img src="{{ asset('assets/images/mjd_dark.png') }}" alt="" height="50">
             </span>
         </a>
         <!-- Light Logo-->
-        <a href="index.html" class="logo logo-light">
+        <a href="{{ route('/home')}}" class="logo logo-light">
             <span class="logo-sm">
                 <img src="{{ asset('assets/images/logo-sm.png')}}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="https://themesbrand.com/velzon/html/default/assets/images/logo-light.png" alt="" height="17">
+                <img src="{{ asset('assets/images/mjd_dark.png') }}" alt="" height="50">
             </span>
         </a>
         <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -34,7 +34,7 @@
             <ul class="navbar-nav" id="navbar-nav">
                 <li class="menu-title"><span data-key="t-menu">Menu</span></li>
                 <li class="nav-item">
-                    <a class="nav-link menu-link" href="{{ route('/home')}}">
+                    <a class="nav-link menu-link @yield('nav_active_dashboard')" href="{{ route('/home')}}">
                         <i class="ri-dashboard-2-line"></i> <span data-key="t-dashboards">Dashboard</span>
                     </a>
                 </li>
@@ -70,6 +70,13 @@
                         {{-- <span class="badge badge-pill bg-danger" data-key="t-new">1</span> --}}
                     </a>
                 </li>
+                <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Report</span></li>
+
+                <li class="nav-item">
+                    <a class="nav-link menu-link @yield('nav_active_report_teknisi')" href="{{ route('report.teknisi')}}">
+                        <i class="ri ri-user-3-line"></i> <span data-key="t-landing">Teknisi</span>
+                    </a>
+                </li>
                 
                 <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Master Data</span></li>
 
@@ -103,11 +110,11 @@
                         <i class="mdi mdi-database-cog-outline"></i> <span data-key="t-landing">Kategori</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link menu-link @yield('nav_active_sub_kategori')" href="{{ route('subkategori')}}">
                         <i class="mdi mdi-database-cog-outline"></i> <span data-key="t-landing">Sub. Kategori</span>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link menu-link @yield('nav_active_teknisi')" href="{{ route('teknisi')}}">
                         <i class="mdi mdi-database-cog-outline"></i> <span data-key="t-landing">Teknisi</span>
@@ -119,13 +126,7 @@
                     </a>
                 </li>
 
-                <li class="menu-title"><i class="ri-more-fill"></i> <span data-key="t-pages">Report</span></li>
-
-                <li class="nav-item">
-                    <a class="nav-link menu-link @yield('report_teknisi')" href="{{ route('crudindex')}}">
-                        <i class="ri ri-user-3-line"></i> <span data-key="t-landing">Teknisi</span>
-                    </a>
-                </li>
+                
                 @endcan
                 @can('isTeknisi')
                 <li class="nav-item">

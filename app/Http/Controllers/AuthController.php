@@ -123,17 +123,30 @@ class AuthController extends Controller
         if (Auth::attempt(['username' => $request->username, 'password'=>$request->password])) {
             //cek apakah ada tiket yg solved ?
             $cektiket = Tiket::where('reported','=', Auth::user()->username)
-                                ->where('status','=', 0)
-                                ->first();
-            $data = null;
+            ->where('status','=', 0)
+            ->get();
+        $data = null;
+        $jumlah_tiket   = Tiket::where('reported','=', Auth::user()->username)
+                            ->count();
+        $onprogress     = Tiket::where('reported','=', Auth::user()->username)
+                            ->where('status','=', 4)
+                            ->count();
+        $done_tiket     = Tiket::where('reported','=', Auth::user()->username)
+                            ->where('status','=', 0)
+                            ->count();
+        foreach ($cektiket as $value) {
+            
             if($cektiket){
                 //cek apakah sudah ada penilaian ?
-                $cekrating = Rating::where('id_ticket', '=', $cektiket->idTiket)->first();
+                $cekrating = Rating::where('id_ticket', '=', $value->idTiket)->first();
                 if(empty($cekrating)){
-                    $data = Tiket::where('idTiket','=',$cektiket->idTiket)->first();
+                    $data = Tiket::where('idTiket','=',$value->idTiket)->first();
+
+                    return view('index', compact('data','jumlah_tiket','onprogress','done_tiket'));
                 }
             }
-            return view('index', compact('data'));
+        }
+            return view('index', compact('data','jumlah_tiket','onprogress','done_tiket'));
         }
         return redirect('/')->with('message','Email atau Password salah!');
     }

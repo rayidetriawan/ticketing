@@ -180,6 +180,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="sort" data-sort="customer_name">No</th>
+                                    <th class="sort" data-sort="email">NIK</th>
                                     <th class="sort" data-sort="email">Nama Teknisi</th>
                                     <th class="sort" data-sort="email">Spesialis</th>
                                     <th class="sort" data-sort="email">Status</th>
@@ -193,6 +194,7 @@
                                     <tr>
 
                                         <td class="status">{{ $data->firstItem() + $no }}</td>
+                                        <td class="customer_name">{{ $item->karyawan->nik }}</td>
                                         <td class="customer_name">{{ $item->karyawan->nama }}</td>
                                         <td class="customer_name">{{ $item->kategori->nama_kategori }}</td>
                                         <td class="customer_name">

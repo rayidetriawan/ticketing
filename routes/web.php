@@ -32,17 +32,31 @@ Route::group(['middleware' => 'auth'], function (){
         //cek apakah ada tiket yg solved ?
         $cektiket = Tiket::where('reported','=', Auth::user()->username)
             ->where('status','=', 0)
-            ->first();
+            ->get();
         $data = null;
-        if($cektiket){
-            //cek apakah sudah ada penilaian ?
-            $cekrating = Rating::where('id_ticket', '=', $cektiket->idTiket)->first();
-            if(empty($cekrating)){
-                $data = Tiket::where('idTiket','=',$cektiket->idTiket)->first();
+        
+        $jumlah_tiket   = Tiket::where('reported','=', Auth::user()->username)
+                            ->count();
+        $onprogress     = Tiket::where('reported','=', Auth::user()->username)
+                            ->where('status','=', 4)
+                            ->count();
+        $done_tiket     = Tiket::where('reported','=', Auth::user()->username)
+                            ->where('status','=', 0)
+                            ->count();
+        foreach ($cektiket as $value) {
+            
+            if($cektiket){
+                //cek apakah sudah ada penilaian ?
+                $cekrating = Rating::where('id_ticket', '=', $value->idTiket)->first();
+                if(empty($cekrating)){
+                    $data = Tiket::where('idTiket','=',$value->idTiket)->first();
+
+                    return view('index', compact('data','jumlah_tiket','onprogress','done_tiket'));
+                }
             }
         }
 
-        return view('index', compact('data'));
+        return view('index', compact('data','jumlah_tiket','onprogress','done_tiket'));
     })->name('/home');
 
     Route::group(['middleware' => 'can:isAdmin'], function (){
@@ -108,7 +122,9 @@ Route::group(['middleware' => 'auth'], function (){
         Route::get('subkategori/{id}/edit','SubKategoriController@edit')->name('edit.subkategori');
         Route::post('subkategori/update','SubKategoriController@update')->name('update.subkategori');  
         Route::delete('subkategori/delete/{id}','SubKategoriController@hapus')->name('hapus.subkategori'); 
-
+        
+        Route::get('report-teknisi','TransactionController@reportTeknisi')->name('report.teknisi');
+        Route::get('report-teknisi/{id}','TransactionController@reportTeknisiDetail')->name('report.teknisi.detail');
        
         
     });

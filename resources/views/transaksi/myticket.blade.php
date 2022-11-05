@@ -189,7 +189,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            @if(!empty($item->ratting['rating']))
+                                            @if($item->ratting['rating'] != null)
                                             <span>
                                                 <span class="badge bg-light text-body fs-12 fw-medium">
                                                     <i class="mdi mdi-star text-warning me-1"></i> {{ $item->ratting['rating'] }}
