@@ -61,7 +61,7 @@
 </div><!-- end row -->
 
 <div class="row">
-    <div class="col-xxl-3">
+    <div class="col-xl-3">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title mb-0">Ticket Details</h5>
@@ -184,7 +184,7 @@
         </div>
     </div>
     <!--end col-->
-    <div class="col-xxl-9">
+    <div class="col-xl-9">
         <div class="card">
             <div class="card-body p-4 mb-0">
                 <h6 class="fw-semibold text-uppercase mb-3">Ticket Discription</h6>

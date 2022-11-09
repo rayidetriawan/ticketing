@@ -34,15 +34,21 @@ Route::group(['middleware' => 'auth'], function (){
             ->where('status','=', 0)
             ->get();
         $data = null;
-        
-        $jumlah_tiket   = Tiket::where('reported','=', Auth::user()->username)
-                            ->count();
-        $onprogress     = Tiket::where('reported','=', Auth::user()->username)
-                            ->where('status','=', 4)
-                            ->count();
-        $done_tiket     = Tiket::where('reported','=', Auth::user()->username)
-                            ->where('status','=', 0)
-                            ->count();
+        if(Auth::user()->role == 'teknisi'){
+            $jumlah_tiket= Tiket::where('id_teknisi', Auth::user()->username)->count();
+            $onprogress = Tiket::where('id_teknisi', Auth::user()->username)->where('status',4)->count();
+            $done_tiket = Tiket::where('id_teknisi', Auth::user()->username)->where('status',0)->count();
+        }else{
+
+            $jumlah_tiket   = Tiket::where('reported','=', Auth::user()->username)
+                                ->count();
+            $onprogress     = Tiket::where('reported','=', Auth::user()->username)
+                                ->where('status','=', 4)
+                                ->count();
+            $done_tiket     = Tiket::where('reported','=', Auth::user()->username)
+                                ->where('status','=', 0)
+                                ->count();
+        }
         foreach ($cektiket as $value) {
             
             if($cektiket){
